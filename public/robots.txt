@@ -1,0 +1,9 @@
+# PulseWeb Technologies - robots.txt
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://pulseweb.co.in/sitemap.xml
+
+# Disallow API routes
+Disallow: /api/
