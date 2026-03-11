@@ -186,7 +186,7 @@ Flutter uses Dart and its own rendering engine (Skia/Impeller) to draw every pix
 - You're building for mobile + web + desktop from one codebase
 - Performance-intensive UI (but not gaming)
 
-**Real project example:** We built BiteSwift, a food delivery app, with Flutter. The buttery-smooth map animations and real-time tracking would have been harder to achieve in React Native.
+**Real project example:** We built LuxeCart, a luxury e-commerce marketplace, with Flutter. The buttery-smooth 3D product previews and real-time bidding animations would have been harder to achieve in React Native.
 
 **Pros:** Beautiful custom UIs, excellent performance, single codebase for mobile/web/desktop, growing ecosystem.
 

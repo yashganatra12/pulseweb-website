@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useRef } from "react";
 import { motion } from "framer-motion";
 import {
   MapPin,
@@ -15,6 +16,11 @@ import {
   Send,
   Code2,
   TrendingUp,
+  Loader2,
+  Upload,
+  FileText,
+  X,
+  AlertCircle,
 } from "lucide-react";
 import Link from "next/link";
 import {
@@ -25,6 +31,8 @@ import {
   TextReveal,
   MagneticButton,
 } from "@/components/animations/MotionWrapper";
+import { db } from "@/lib/firebase";
+import { collection, addDoc, Timestamp } from "firebase/firestore";
 
 const perks = [
   {
@@ -144,6 +152,95 @@ const openings = [
 ];
 
 export default function CareersPage() {
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    position: "",
+    experience: "",
+    message: "",
+  });
+  const [cvFile, setCvFile] = useState<File | null>(null);
+  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [errorMsg, setErrorMsg] = useState("");
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+  ) => {
+    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      if (file.size > 5 * 1024 * 1024) {
+        setErrorMsg("File size must be less than 5MB.");
+        setStatus("error");
+        return;
+      }
+      const allowed = [
+        "application/pdf",
+        "application/msword",
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      ];
+      if (!allowed.includes(file.type)) {
+        setErrorMsg("Only PDF and Word documents are accepted.");
+        setStatus("error");
+        return;
+      }
+      setCvFile(file);
+      setErrorMsg("");
+      setStatus("idle");
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setStatus("loading");
+    setErrorMsg("");
+
+    try {
+      // Store info in Firebase (no file)
+      await addDoc(collection(db, "applications"), {
+        ...formData,
+        cvName: cvFile?.name || "",
+        createdAt: Timestamp.now(),
+      });
+
+      // Send email with CV attached
+      const emailData = new FormData();
+      emailData.append("name", formData.name);
+      emailData.append("email", formData.email);
+      emailData.append("phone", formData.phone);
+      emailData.append("position", formData.position);
+      emailData.append("experience", formData.experience);
+      emailData.append("message", formData.message);
+      if (cvFile) {
+        emailData.append("cv", cvFile);
+      }
+
+      const res = await fetch("/api/career", {
+        method: "POST",
+        body: emailData,
+      });
+      const data = await res.json();
+
+      if (res.ok) {
+        setStatus("success");
+        setFormData({ name: "", email: "", phone: "", position: "", experience: "", message: "" });
+        setCvFile(null);
+      } else {
+        setStatus("error");
+        setErrorMsg(data.error || "Something went wrong. Please try again.");
+      }
+    } catch (err) {
+      console.error("Career form error:", err);
+      setStatus("error");
+      setErrorMsg("Something went wrong. Please try again.");
+    }
+  };
+
   return (
     <>
       {/* Hero */}
@@ -353,23 +450,19 @@ export default function CareersPage() {
                       <div className="mt-10 pt-8 border-t border-white/5">
                         <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
                           <p className="text-sm text-gray-500">
-                            Send your resume to{" "}
-                            <a
-                              href="mailto:info@pulseweb.com"
-                              className="text-primary hover:underline"
-                            >
-                              info@pulseweb.com
-                            </a>{" "}
-                            with subject &ldquo;{job.title} — Application&rdquo;
+                            Fill out the application form below to apply for this position.
                           </p>
                           <MagneticButton>
-                            <a
-                              href={`mailto:info@pulseweb.com?subject=${encodeURIComponent(job.title + " — Application")}`}
+                            <button
+                              onClick={() => {
+                                setFormData((prev) => ({ ...prev, position: job.title }));
+                                document.getElementById("apply-form")?.scrollIntoView({ behavior: "smooth" });
+                              }}
                               className={`inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r ${job.gradient} text-white font-semibold rounded-full`}
                             >
                               <Send size={16} />
                               Apply Now
-                            </a>
+                            </button>
                           </MagneticButton>
                         </div>
                       </div>
@@ -382,36 +475,240 @@ export default function CareersPage() {
         </div>
       </section>
 
-      {/* Don't See a Fit? */}
-      <section className="py-20">
-        <div className="max-w-4xl mx-auto px-4 text-center">
+      {/* Application Form */}
+      <section id="apply-form" className="py-20">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <FadeIn>
-            <motion.div
-              whileHover={{ scale: 1.01 }}
-              className="rounded-3xl bg-gradient-to-br from-primary/10 to-accent/5 border border-primary/20 p-12"
-            >
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                Don&apos;t See Your Role?
+            <div className="text-center mb-12">
+              <span className="text-primary text-sm font-semibold uppercase tracking-widest">
+                Apply Now
+              </span>
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mt-3 mb-4">
+                Submit Your <span className="text-gradient">Application</span>
               </h2>
-              <p className="text-gray-400 text-lg mb-8 max-w-2xl mx-auto">
-                We&apos;re always looking for talented people. Send us your
-                resume and tell us how you&apos;d contribute to PulseWeb — we&apos;d
-                love to hear from you.
+              <p className="text-gray-400 max-w-2xl mx-auto">
+                Interested in joining PulseWeb? Fill out the form below and
+                upload your CV. We&apos;ll get back to you soon.
               </p>
-              <MagneticButton className="inline-block">
-                <a
-                  href="mailto:info@pulseweb.com?subject=Open Application — PulseWeb Technologies"
-                  className="group inline-flex items-center gap-2 px-8 py-4 bg-primary text-white font-semibold rounded-full text-lg"
-                >
-                  Send Your Resume
-                  <ArrowRight
-                    size={20}
-                    className="group-hover:translate-x-1 transition-transform"
-                  />
-                </a>
-              </MagneticButton>
-            </motion.div>
+            </div>
           </FadeIn>
+
+          <SlideIn direction="left">
+            <motion.form
+              onSubmit={handleSubmit}
+              className="space-y-5 p-8 md:p-10 rounded-3xl bg-surface border border-border"
+            >
+              {status === "success" ? (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="text-center py-12"
+                >
+                  <div className="w-16 h-16 rounded-full bg-green-500/10 flex items-center justify-center mx-auto mb-4">
+                    <CheckCircle2 size={32} className="text-green-400" />
+                  </div>
+                  <h3 className="text-2xl font-bold text-white mb-2">
+                    Application Submitted!
+                  </h3>
+                  <p className="text-gray-400 mb-6">
+                    Thank you for applying. We&apos;ll review your application and
+                    get back to you within a few days.
+                  </p>
+                  <button
+                    type="button"
+                    onClick={() => setStatus("idle")}
+                    className="px-6 py-2 border border-primary/30 text-primary rounded-full text-sm font-medium hover:bg-primary/5 transition-colors"
+                  >
+                    Submit Another Application
+                  </button>
+                </motion.div>
+              ) : (
+                <>
+                  <h3 className="text-xl font-bold mb-2">Your Details</h3>
+                  <p className="text-sm text-gray-500 mb-6">
+                    Fields marked with * are required.
+                  </p>
+
+                  {status === "error" && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="flex items-center gap-2 p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm"
+                    >
+                      <AlertCircle size={18} className="flex-shrink-0" />
+                      {errorMsg}
+                    </motion.div>
+                  )}
+
+                  <div className="grid sm:grid-cols-2 gap-5">
+                    <div>
+                      <label className="block text-sm text-gray-400 mb-1.5">
+                        Full Name *
+                      </label>
+                      <input
+                        type="text"
+                        name="name"
+                        value={formData.name}
+                        onChange={handleChange}
+                        required
+                        placeholder="John Doe"
+                        className="w-full px-4 py-3 bg-[#0a0a0a] border border-border rounded-xl text-white placeholder-gray-600 focus:outline-none focus:border-primary/50 transition-colors text-sm"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm text-gray-400 mb-1.5">
+                        Email Address *
+                      </label>
+                      <input
+                        type="email"
+                        name="email"
+                        value={formData.email}
+                        onChange={handleChange}
+                        required
+                        placeholder="john@example.com"
+                        className="w-full px-4 py-3 bg-[#0a0a0a] border border-border rounded-xl text-white placeholder-gray-600 focus:outline-none focus:border-primary/50 transition-colors text-sm"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid sm:grid-cols-2 gap-5">
+                    <div>
+                      <label className="block text-sm text-gray-400 mb-1.5">
+                        Phone Number
+                      </label>
+                      <input
+                        type="tel"
+                        name="phone"
+                        value={formData.phone}
+                        onChange={handleChange}
+                        placeholder="+91 9426258442"
+                        className="w-full px-4 py-3 bg-[#0a0a0a] border border-border rounded-xl text-white placeholder-gray-600 focus:outline-none focus:border-primary/50 transition-colors text-sm"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm text-gray-400 mb-1.5">
+                        Position *
+                      </label>
+                      <select
+                        name="position"
+                        value={formData.position}
+                        onChange={handleChange}
+                        required
+                        className="w-full px-4 py-3 bg-[#0a0a0a] border border-border rounded-xl text-gray-400 focus:outline-none focus:border-primary/50 transition-colors text-sm"
+                      >
+                        <option value="">Select a position</option>
+                        {openings.map((job) => (
+                          <option key={job.id} value={job.title}>
+                            {job.title}
+                          </option>
+                        ))}
+                        <option value="Other">Other</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm text-gray-400 mb-1.5">
+                      Experience
+                    </label>
+                    <select
+                      name="experience"
+                      value={formData.experience}
+                      onChange={handleChange}
+                      className="w-full px-4 py-3 bg-[#0a0a0a] border border-border rounded-xl text-gray-400 focus:outline-none focus:border-primary/50 transition-colors text-sm"
+                    >
+                      <option value="">Select experience level</option>
+                      <option value="Fresher">Fresher</option>
+                      <option value="0-1 Years">0-1 Years</option>
+                      <option value="1-2 Years">1-2 Years</option>
+                      <option value="2-5 Years">2-5 Years</option>
+                      <option value="5+ Years">5+ Years</option>
+                    </select>
+                  </div>
+
+                  {/* CV Upload */}
+                  <div>
+                    <label className="block text-sm text-gray-400 mb-1.5">
+                      Upload CV/Resume * (PDF or Word, max 5MB)
+                    </label>
+                    <input
+                      type="file"
+                      ref={fileInputRef}
+                      onChange={handleFileChange}
+                      accept=".pdf,.doc,.docx"
+                      className="hidden"
+                    />
+                    {cvFile ? (
+                      <div className="flex items-center gap-3 px-4 py-3 bg-[#0a0a0a] border border-primary/30 rounded-xl">
+                        <FileText size={20} className="text-primary flex-shrink-0" />
+                        <span className="text-sm text-white flex-1 truncate">
+                          {cvFile.name}
+                        </span>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setCvFile(null);
+                            if (fileInputRef.current) fileInputRef.current.value = "";
+                          }}
+                          className="text-gray-500 hover:text-red-400 transition-colors"
+                        >
+                          <X size={16} />
+                        </button>
+                      </div>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={() => fileInputRef.current?.click()}
+                        className="w-full px-4 py-6 bg-[#0a0a0a] border border-dashed border-border rounded-xl text-gray-500 hover:border-primary/50 hover:text-gray-400 transition-colors flex flex-col items-center gap-2"
+                      >
+                        <Upload size={24} />
+                        <span className="text-sm">Click to upload your CV</span>
+                      </button>
+                    )}
+                  </div>
+
+                  <div>
+                    <label className="block text-sm text-gray-400 mb-1.5">
+                      Cover Note
+                    </label>
+                    <textarea
+                      name="message"
+                      value={formData.message}
+                      onChange={handleChange}
+                      rows={4}
+                      placeholder="Tell us why you'd be a great fit for PulseWeb..."
+                      className="w-full px-4 py-3 bg-[#0a0a0a] border border-border rounded-xl text-white placeholder-gray-600 focus:outline-none focus:border-primary/50 transition-colors text-sm resize-none"
+                    />
+                  </div>
+
+                  <MagneticButton>
+                    <button
+                      type="submit"
+                      disabled={status === "loading" || !cvFile}
+                      className="w-full py-4 bg-primary text-white font-semibold rounded-xl hover:bg-primary-light transition-colors flex items-center justify-center gap-2 text-lg disabled:opacity-60 disabled:cursor-not-allowed"
+                    >
+                      {status === "loading" ? (
+                        <>
+                          <Loader2 size={20} className="animate-spin" />
+                          Submitting...
+                        </>
+                      ) : (
+                        <>
+                          <Send size={20} />
+                          Submit Application
+                        </>
+                      )}
+                    </button>
+                  </MagneticButton>
+
+                  <p className="text-xs text-gray-600 text-center">
+                    By submitting, you agree to our Privacy Policy. Your data
+                    will only be used for recruitment purposes.
+                  </p>
+                </>
+              )}
+            </motion.form>
+          </SlideIn>
         </div>
       </section>
     </>

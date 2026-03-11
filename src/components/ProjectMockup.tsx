@@ -265,59 +265,59 @@ export function CloudDeskMockup({ gradient }: { gradient: string }) {
   );
 }
 
-// BiteSwift - Food delivery with map and order tracking
-export function BiteSwiftMockup({ gradient }: { gradient: string }) {
+// LuxeCart - Luxury e-commerce marketplace with product cards and cart
+export function LuxeCartMockup({ gradient }: { gradient: string }) {
   return (
-    <PhoneMockup gradient={gradient}>
+    <BrowserMockup gradient={gradient} title="luxecart.com">
       <div className="space-y-3">
-        {/* Search */}
-        <div className="bg-white/10 rounded-full px-3 py-2 flex items-center gap-2 backdrop-blur">
-          <div className="w-3 h-3 rounded-full bg-white/20" />
-          <div className="text-[8px] text-white/30">Search restaurants...</div>
-        </div>
-        {/* Map area */}
-        <div className="bg-white/10 rounded-xl p-3 backdrop-blur relative h-28">
-          {/* Fake map grid */}
-          <div className="absolute inset-2 grid grid-cols-4 grid-rows-3 gap-px opacity-20">
-            {Array.from({ length: 12 }).map((_, i) => (
-              <div key={i} className="border border-white/20 rounded-sm" />
-            ))}
+        {/* Nav with search and cart */}
+        <div className="flex items-center gap-3 mb-2">
+          <div className="w-16 h-3 bg-white/40 rounded" />
+          <div className="flex-1 bg-white/10 rounded-full px-3 py-1.5 flex items-center gap-2">
+            <div className="w-3 h-3 rounded-full bg-white/20" />
+            <div className="w-24 h-2 bg-white/15 rounded" />
           </div>
-          {/* Route line */}
-          <svg className="absolute inset-0 w-full h-full" viewBox="0 0 100 80">
-            <path d="M20 60 Q40 30 60 40 T90 20" stroke="rgba(96,165,250,0.6)" strokeWidth="2" fill="none" strokeDasharray="4 2" />
-            <circle cx="20" cy="60" r="4" fill="#4ade80" />
-            <circle cx="90" cy="20" r="4" fill="#f87171" />
-          </svg>
-          <div className="absolute bottom-2 left-2 bg-black/40 rounded-lg px-2 py-1">
-            <div className="text-[7px] text-white/70">ETA: 12 min</div>
+          <div className="flex gap-2">
+            <div className="w-6 h-6 rounded-full bg-white/15" />
+            <div className="relative">
+              <div className="w-6 h-6 rounded-full bg-white/20" />
+              <div className="absolute -top-1 -right-1 w-3 h-3 rounded-full bg-pink-400 text-[6px] text-white flex items-center justify-center">2</div>
+            </div>
           </div>
         </div>
-        {/* Restaurant cards */}
-        {[
-          { name: "Pizza Palace", rating: "4.8", time: "25 min", emoji: "🍕" },
-          { name: "Sushi Garden", rating: "4.6", time: "30 min", emoji: "🍣" },
-        ].map((r) => (
-          <div key={r.name} className="bg-white/10 rounded-xl p-2.5 backdrop-blur flex gap-2.5 items-center">
-            <div className="w-11 h-11 bg-white/10 rounded-lg flex items-center justify-center text-lg flex-shrink-0">
-              {r.emoji}
+        {/* Featured banner */}
+        <div className="bg-white/10 rounded-xl p-4 backdrop-blur flex items-center justify-between">
+          <div>
+            <div className="text-[7px] text-white/40 uppercase tracking-widest mb-1">Exclusive Drop</div>
+            <div className="w-28 h-3 bg-white/40 rounded mb-1.5" />
+            <div className="w-20 h-2 bg-white/20 rounded mb-2" />
+            <div className="w-16 h-5 bg-white/25 rounded-full flex items-center justify-center">
+              <span className="text-[7px] text-white/70">Shop Now</span>
             </div>
-            <div className="flex-1 min-w-0">
-              <div className="text-[9px] text-white font-medium">{r.name}</div>
-              <div className="flex items-center gap-2 mt-0.5">
-                <span className="text-[7px] text-yellow-300">★ {r.rating}</span>
-                <span className="text-[7px] text-white/30">{r.time}</span>
-              </div>
-            </div>
-            <div className="w-6 h-6 rounded-full bg-white/15 flex items-center justify-center text-[8px] text-white/50">→</div>
           </div>
-        ))}
-        {/* Order button */}
-        <div className="bg-white/25 rounded-full py-2 text-center backdrop-blur">
-          <div className="text-[9px] text-white font-medium">View Cart (2 items)</div>
+          <div className="w-16 h-16 rounded-lg bg-white/15 flex items-center justify-center">
+            <span className="text-xl">💎</span>
+          </div>
+        </div>
+        {/* Product grid */}
+        <div className="grid grid-cols-3 gap-2">
+          {[
+            { emoji: "👜", price: "$1,250" },
+            { emoji: "⌚", price: "$4,800" },
+            { emoji: "👠", price: "$890" },
+            { emoji: "🕶️", price: "$520" },
+            { emoji: "💍", price: "$3,200" },
+            { emoji: "👗", price: "$1,680" },
+          ].map((item, i) => (
+            <div key={i} className="bg-white/10 rounded-lg p-2 backdrop-blur text-center">
+              <div className="w-full h-10 flex items-center justify-center text-lg mb-1">{item.emoji}</div>
+              <div className="w-10 h-1.5 bg-white/25 rounded mx-auto mb-1" />
+              <div className="text-[7px] text-white/60 font-medium">{item.price}</div>
+            </div>
+          ))}
         </div>
       </div>
-    </PhoneMockup>
+    </BrowserMockup>
   );
 }
 

@@ -22,6 +22,8 @@ import {
   StaggerItem,
   MagneticButton,
 } from "@/components/animations/MotionWrapper";
+import { db } from "@/lib/firebase";
+import { collection, addDoc, Timestamp } from "firebase/firestore";
 
 const faqs = [
   {
@@ -75,6 +77,13 @@ export default function ContactPage() {
     setErrorMsg("");
 
     try {
+      // Store in Firebase
+      await addDoc(collection(db, "contacts"), {
+        ...formData,
+        createdAt: Timestamp.now(),
+      });
+
+      // Send email notification
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },

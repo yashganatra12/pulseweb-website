@@ -12,9 +12,7 @@ const footerLinks = {
   ],
   Company: [
     { label: "About Us", href: "/about" },
-    { label: "Our Team", href: "/about" },
     { label: "Portfolio", href: "/portfolio" },
-    { label: "Blog", href: "/blog" },
     { label: "Careers", href: "/careers" },
     { label: "Contact", href: "/contact" },
   ],
@@ -22,9 +20,9 @@ const footerLinks = {
     { label: "Case Studies", href: "/portfolio" },
     { label: "Tech Stack", href: "/about" },
     { label: "FAQs", href: "/contact" },
-    { label: "Privacy Policy", href: "#" },
-    { label: "Terms of Service", href: "#" },
-    { label: "Sitemap", href: "#" },
+    { label: "Privacy Policy", href: "/privacy-policy" },
+    { label: "Terms of Service", href: "/terms-of-service" },
+    { label: "Sitemap", href: "/sitemap-page" },
   ],
 };
 

@@ -1,7 +1,8 @@
 "use client";
 
+import { useState } from "react";
 import { motion } from "framer-motion";
-import { Calendar, Clock, ArrowRight } from "lucide-react";
+import { Calendar, Clock, ArrowRight, Loader2, Check } from "lucide-react";
 import Link from "next/link";
 import {
   FadeIn,
@@ -12,10 +13,53 @@ import {
 } from "@/components/animations/MotionWrapper";
 import { BlogBanner } from "@/components/ProjectMockup";
 import { allPosts, getFeaturedPost, getRegularPosts } from "@/data/blogs";
+import { db } from "@/lib/firebase";
+import { collection, addDoc, Timestamp } from "firebase/firestore";
 
 export default function BlogPage() {
   const featuredPost = getFeaturedPost();
   const posts = getRegularPosts();
+  const [email, setEmail] = useState("");
+  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [errorMsg, setErrorMsg] = useState("");
+
+  async function handleSubscribe(e: React.FormEvent) {
+    e.preventDefault();
+    if (!email.trim()) return;
+
+    setStatus("loading");
+    setErrorMsg("");
+
+    try {
+      // Store in Firebase
+      await addDoc(collection(db, "subscribers"), {
+        email: email.trim(),
+        createdAt: Timestamp.now(),
+      });
+
+      // Send email notification
+      const res = await fetch("/api/newsletter", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: email.trim() }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        setStatus("error");
+        setErrorMsg(data.error || "Something went wrong.");
+        return;
+      }
+
+      setStatus("success");
+      setEmail("");
+    } catch (err) {
+      console.error("Subscribe error:", err);
+      setStatus("error");
+      setErrorMsg("Something went wrong. Please try again.");
+    }
+  }
 
   return (
     <>
@@ -152,19 +196,45 @@ export default function BlogPage() {
                 Get the latest insights on web development, design, and tech
                 delivered to your inbox. No spam, just value.
               </p>
-              <div className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
-                <input
-                  type="email"
-                  placeholder="your@email.com"
-                  className="flex-1 px-5 py-3 bg-[#0a0a0a] border border-border rounded-xl text-white placeholder-gray-600 focus:outline-none focus:border-primary/50 transition-colors"
-                />
-                <MagneticButton>
-                  <button className="px-6 py-3 bg-primary text-white font-semibold rounded-xl hover:bg-primary-light transition-colors flex items-center justify-center gap-2">
-                    Subscribe
-                    <ArrowRight size={16} />
-                  </button>
-                </MagneticButton>
-              </div>
+              {status === "success" ? (
+                <div className="flex items-center justify-center gap-2 text-green-400 font-medium">
+                  <Check size={20} />
+                  Thanks for subscribing! We&apos;ll be in touch.
+                </div>
+              ) : (
+                <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
+                  <input
+                    type="email"
+                    placeholder="your@email.com"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                    className="flex-1 px-5 py-3 bg-[#0a0a0a] border border-border rounded-xl text-white placeholder-gray-600 focus:outline-none focus:border-primary/50 transition-colors"
+                  />
+                  <MagneticButton>
+                    <button
+                      type="submit"
+                      disabled={status === "loading"}
+                      className="px-6 py-3 bg-primary text-white font-semibold rounded-xl hover:bg-primary-light transition-colors flex items-center justify-center gap-2 disabled:opacity-60"
+                    >
+                      {status === "loading" ? (
+                        <>
+                          <Loader2 size={16} className="animate-spin" />
+                          Sending...
+                        </>
+                      ) : (
+                        <>
+                          Subscribe
+                          <ArrowRight size={16} />
+                        </>
+                      )}
+                    </button>
+                  </MagneticButton>
+                </form>
+              )}
+              {status === "error" && (
+                <p className="text-red-400 text-sm mt-3">{errorMsg}</p>
+              )}
             </motion.div>
           </FadeIn>
         </div>
