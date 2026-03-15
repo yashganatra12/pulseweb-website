@@ -31,7 +31,7 @@ export async function POST(req: NextRequest) {
 
     const mailOptions = {
       from: `PulseWeb Website <${process.env.SMTP_EMAIL}>`,
-      to: process.env.RECEIVER_EMAIL,
+      to: "info@pulsewebtechnologies.com",
       subject: `New Newsletter Subscriber — ${email}`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #0a0a0a; color: #ededed; border-radius: 12px; overflow: hidden;">

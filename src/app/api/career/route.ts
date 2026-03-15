@@ -39,7 +39,7 @@ export async function POST(req: NextRequest) {
 
     const mailOptions = {
       from: `PulseWeb Website <${process.env.SMTP_EMAIL}>`,
-      to: process.env.RECEIVER_EMAIL,
+      to: "info@pulsewebtechnologies.com",
       replyTo: email,
       subject: `New Job Application — ${position} — ${name}`,
       attachments,
