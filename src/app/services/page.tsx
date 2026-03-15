@@ -336,7 +336,7 @@ export default function ServicesPage() {
       </section>
 
       {/* Process */}
-      <section className="py-28 relative">
+      <section className="py-28 relative overflow-hidden">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[1px] bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

@@ -154,7 +154,7 @@ export default function ContactPage() {
                     {
                       icon: Phone,
                       title: "Call Us",
-                      lines: ["+91-9426258442"],
+                      lines: ["+91-6351563390"],
                     },
                     {
                       icon: MapPin,
@@ -319,7 +319,7 @@ export default function ContactPage() {
                             name="phone"
                             value={formData.phone}
                             onChange={handleChange}
-                            placeholder="+91 9426258442"
+                            placeholder="+91 63515 63390"
                             className="w-full px-4 py-3 bg-[#0a0a0a] border border-border rounded-xl text-white placeholder-gray-600 focus:outline-none focus:border-primary/50 transition-colors text-sm"
                           />
                         </div>
@@ -430,7 +430,7 @@ export default function ContactPage() {
       </section>
 
       {/* FAQs */}
-      <section className="py-28 relative">
+      <section className="py-28 relative overflow-hidden">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[1px] bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
 
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">

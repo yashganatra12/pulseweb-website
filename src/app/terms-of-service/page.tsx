@@ -115,7 +115,7 @@ const sections = [
     content: [
       "If you have any questions or concerns about these Terms of Service, please reach out to us:",
       "**Email:** info@pulseweb.com",
-      "**Phone:** +91-9426258442",
+      "**Phone:** +91-6351563390",
       "**Address:** Mordern Building, Cenal Road, Rajkot - 360 001, Gujarat, India",
       "We are committed to addressing your concerns promptly and transparently.",
     ],

@@ -88,7 +88,7 @@ const sections = [
     content: [
       "If you have any questions, concerns, or requests regarding this Privacy Policy or our data practices, please contact us:",
       "**Email:** info@pulseweb.com",
-      "**Phone:** +91-9426258442",
+      "**Phone:** +91-6351563390",
       "**Address:** Mordern Building, Cenal Road, Rajkot - 360 001, Gujarat, India",
     ],
   },

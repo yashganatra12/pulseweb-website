@@ -100,7 +100,7 @@ const jsonLd = {
       name: "PulseWeb Technologies",
       url: siteUrl,
       email: "info@pulseweb.com",
-      telephone: "+91-9426258442",
+      telephone: "+91-6351563390",
       address: {
         "@type": "PostalAddress",
         streetAddress: "Mordern Building, Cenal Road",
@@ -129,7 +129,7 @@ const jsonLd = {
       description:
         "Web & App Development Company offering custom websites, mobile apps, UI/UX design, and digital marketing services.",
       url: siteUrl,
-      telephone: "+91-9426258442",
+      telephone: "+91-6351563390",
       email: "info@pulseweb.com",
       address: {
         "@type": "PostalAddress",
