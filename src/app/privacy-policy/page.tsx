@@ -46,7 +46,7 @@ const sections = [
       "Your personal data is stored on secure servers and is retained only for as long as necessary to fulfill the purposes outlined in this policy, unless a longer retention period is required by law.",
       "Contact form submissions are retained for up to 2 years to facilitate ongoing communication and project discussions.",
       "Website analytics data is retained in an anonymized format and does not personally identify you.",
-      "You may request deletion of your personal data at any time by contacting us at info@pulseweb.com.",
+      "You may request deletion of your personal data at any time by contacting us at info@pulsewebtechnologies.com.",
     ],
   },
   {
@@ -70,7 +70,7 @@ const sections = [
       "**Right to Deletion:** You can request deletion of your personal data, subject to legal obligations.",
       "**Right to Object:** You can object to the processing of your personal data for certain purposes.",
       "**Right to Withdraw Consent:** Where processing is based on consent, you may withdraw it at any time.",
-      "To exercise any of these rights, please contact us at info@pulseweb.com.",
+      "To exercise any of these rights, please contact us at info@pulsewebtechnologies.com.",
     ],
   },
   {
@@ -87,9 +87,9 @@ const sections = [
     title: "Contact Us",
     content: [
       "If you have any questions, concerns, or requests regarding this Privacy Policy or our data practices, please contact us:",
-      "**Email:** info@pulseweb.com",
+      "**Email:** info@pulsewebtechnologies.com",
       "**Phone:** +91-6351563390",
-      "**Address:** Mordern Building, Cenal Road, Rajkot - 360 001, Gujarat, India",
+      "**Address:** Modern Building, Canal Road, Rajkot - 360 001, Gujarat, India",
     ],
   },
 ];

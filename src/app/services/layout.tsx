@@ -1,11 +1,23 @@
 import { Metadata } from "next";
 
+const siteUrl = "https://pulsewebtechnologies.com";
+
+const breadcrumbJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Home", item: siteUrl },
+    { "@type": "ListItem", position: 2, name: "Services", item: `${siteUrl}/services` },
+  ],
+};
+
 export const metadata: Metadata = {
-  title: "Our Services — Web, App & Digital Solutions",
+  title: "Web Development, App Development & Digital Marketing Services",
   description:
-    "Explore PulseWeb Technologies' services: custom web development, mobile app development, UI/UX design, e-commerce solutions, SEO optimization, cloud & DevOps, and digital marketing in Rajkot, Gujarat.",
+    "Explore PulseWeb Technologies' services: custom website development, mobile app development (Flutter & React Native), UI/UX design, e-commerce solutions, SEO optimization, cloud & DevOps, and digital marketing in Rajkot, Gujarat, India.",
   keywords: [
     "web development services",
+    "website development services India",
     "mobile app development services",
     "UI/UX design services Rajkot",
     "e-commerce development India",
@@ -19,15 +31,17 @@ export const metadata: Metadata = {
     "progressive web app development",
     "API development services",
     "responsive website design",
+    "web development company services",
   ],
   openGraph: {
-    title: "Services | PulseWeb Technologies",
+    title: "Our Services — Web, App & Digital Solutions | PulseWeb Technologies",
     description:
-      "Custom web & app development, UI/UX design, SEO, and digital marketing services to grow your business.",
-    url: "https://pulseweb.co.in/services",
+      "Custom web development, mobile app development, UI/UX design, SEO, and digital marketing services to grow your business.",
+    url: `${siteUrl}/services`,
+    images: [{ url: `${siteUrl}/og-image.png`, width: 1200, height: 630, alt: "PulseWeb Technologies Services" }],
   },
   alternates: {
-    canonical: "https://pulseweb.co.in/services",
+    canonical: `${siteUrl}/services`,
   },
 };
 
@@ -36,5 +50,13 @@ export default function ServicesLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <>{children}</>;
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
+      {children}
+    </>
+  );
 }

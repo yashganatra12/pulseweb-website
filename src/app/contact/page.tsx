@@ -149,7 +149,7 @@ export default function ContactPage() {
                     {
                       icon: Mail,
                       title: "Email Us",
-                      lines: ["info@pulseweb.com"],
+                      lines: ["info@pulsewebtechnologies.com"],
                     },
                     {
                       icon: Phone,
@@ -161,7 +161,7 @@ export default function ContactPage() {
                       title: "Visit Us",
                       lines: [
                         "PulseWeb Technologies",
-                        "Mordern Building, Cenal Road",
+                        "Modern Building, Canal Road",
                         "Rajkot - 360 001, Gujarat, India",
                       ],
                     },
@@ -207,17 +207,21 @@ export default function ContactPage() {
                   <h4 className="font-semibold text-white mb-3">Follow Us</h4>
                   <div className="flex gap-3">
                     {[
-                      { label: "Li", bg: "hover:bg-blue-700" },
-                      { label: "Ig", bg: "hover:bg-pink-600" },
-                      { label: "X", bg: "hover:bg-black" },
+                      { label: "Li", bg: "hover:bg-blue-700", href: "https://www.linkedin.com/company/pulseweb-technologies", ariaLabel: "Follow us on LinkedIn" },
+                      { label: "Ig", bg: "hover:bg-pink-600", href: "https://www.instagram.com/pulseweb.technologies", ariaLabel: "Follow us on Instagram" },
+                      { label: "X", bg: "hover:bg-black", href: "https://x.com/pulsewebtech", ariaLabel: "Follow us on X" },
                     ].map((s) => (
-                      <motion.div
+                      <motion.a
                         key={s.label}
+                        href={s.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={s.ariaLabel}
                         whileHover={{ y: -3, scale: 1.1 }}
                         className={`w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:text-white ${s.bg} transition-colors cursor-pointer text-xs font-bold`}
                       >
                         {s.label}
-                      </motion.div>
+                      </motion.a>
                     ))}
                   </div>
                 </div>

@@ -3,16 +3,17 @@ import Logo from "./Logo";
 
 const footerLinks = {
   Services: [
-    { label: "Web Development", href: "/services" },
-    { label: "Mobile App Development", href: "/services" },
-    { label: "UI/UX Design", href: "/services" },
-    { label: "E-Commerce Solutions", href: "/services" },
-    { label: "SEO & Marketing", href: "/services" },
-    { label: "Cloud & DevOps", href: "/services" },
+    { label: "Web Development", href: "/services#web-development" },
+    { label: "Mobile App Development", href: "/services#mobile-apps" },
+    { label: "UI/UX Design", href: "/services#ui-ux-design" },
+    { label: "E-Commerce Solutions", href: "/services#e-commerce" },
+    { label: "SEO & Marketing", href: "/services#seo-marketing" },
+    { label: "Cloud & DevOps", href: "/services#cloud-devops" },
   ],
   Company: [
     { label: "About Us", href: "/about" },
     { label: "Portfolio", href: "/portfolio" },
+    { label: "Blog", href: "/blog" },
     { label: "Careers", href: "/careers" },
     { label: "Contact", href: "/contact" },
   ],
@@ -25,6 +26,24 @@ const footerLinks = {
     { label: "Sitemap", href: "/sitemap-page" },
   ],
 };
+
+const socialLinks = [
+  {
+    label: "Li",
+    ariaLabel: "Follow PulseWeb Technologies on LinkedIn",
+    href: "https://www.linkedin.com/company/pulseweb-technologies",
+  },
+  {
+    label: "Ig",
+    ariaLabel: "Follow PulseWeb Technologies on Instagram",
+    href: "https://www.instagram.com/pulseweb.technologies",
+  },
+  {
+    label: "X",
+    ariaLabel: "Follow PulseWeb Technologies on X (Twitter)",
+    href: "https://x.com/pulsewebtech",
+  },
+];
 
 export default function Footer() {
   return (
@@ -52,17 +71,17 @@ export default function Footer() {
             </p>
             {/* Social links */}
             <div className="flex gap-3">
-              {[
-                { label: "Li" },
-                { label: "Ig" },
-                { label: "X" },
-              ].map((s) => (
-                <div
+              {socialLinks.map((s) => (
+                <a
                   key={s.label}
-                  className="w-9 h-9 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:text-white hover:border-primary/30 transition-colors cursor-pointer text-xs font-bold"
+                  href={s.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={s.ariaLabel}
+                  className="w-9 h-9 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:text-white hover:border-primary/30 transition-colors text-xs font-bold"
                 >
                   {s.label}
-                </div>
+                </a>
               ))}
             </div>
           </div>

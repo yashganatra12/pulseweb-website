@@ -20,7 +20,7 @@ const sections = [
     icon: FileText,
     title: "Acceptance of Terms",
     content: [
-      "By accessing or using the PulseWeb Technologies website (pulseweb.co.in) or engaging our services, you agree to be bound by these Terms of Service and all applicable laws and regulations.",
+      "By accessing or using the PulseWeb Technologies website (pulsewebtechnologies.com) or engaging our services, you agree to be bound by these Terms of Service and all applicable laws and regulations.",
       "If you do not agree with any part of these terms, you must not use our website or services. These terms apply to all visitors, users, and clients of PulseWeb Technologies.",
       "We reserve the right to update or modify these terms at any time. Continued use of our services after changes are posted constitutes acceptance of the revised terms.",
     ],
@@ -114,9 +114,9 @@ const sections = [
     title: "Contact Us",
     content: [
       "If you have any questions or concerns about these Terms of Service, please reach out to us:",
-      "**Email:** info@pulseweb.com",
+      "**Email:** info@pulsewebtechnologies.com",
       "**Phone:** +91-6351563390",
-      "**Address:** Mordern Building, Cenal Road, Rajkot - 360 001, Gujarat, India",
+      "**Address:** Modern Building, Canal Road, Rajkot - 360 001, Gujarat, India",
       "We are committed to addressing your concerns promptly and transparently.",
     ],
   },
